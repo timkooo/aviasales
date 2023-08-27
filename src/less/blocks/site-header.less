@@ -1,0 +1,25 @@
+.site-header {
+  flex-grow: 0;
+  background-color: @color-bg-dark;
+}
+
+.site-header__wrapper {
+  .wrapper;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-header__logo {
+  width: 130px;
+  height: 74px;
+  background-image: url("../../img/airplain-logo.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: @color-accent;
+
+  &:hover {
+    color: #b5418c;
+  }
+}

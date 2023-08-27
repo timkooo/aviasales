@@ -1,0 +1,136 @@
+@font-face {
+  font-family: "Open Sans";
+  src: url("../fonts/opensans.woff2") format("woff2"), url("../fonts/opensans.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("../fonts/opensansbold.woff2") format("woff2"), url("../fonts/opensansbold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+.wrapper {
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 320px;
+  max-width: 1150px;
+  padding: 0 30px;
+}
+@media (min-width: 768px) {
+  .wrapper {
+    padding: 0 50px;
+  }
+}
+.site-html {
+  height: 100%;
+}
+.site-body {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+  color: #efeffa;
+  font-family: "Open Sans", "Arial", "Helvetica", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  background-color: #2d2d32;
+}
+.site-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.site-header {
+  flex-grow: 0;
+  background-color: #19191c;
+}
+.site-header__wrapper {
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 320px;
+  max-width: 1150px;
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .site-header__wrapper {
+    padding: 0 50px;
+  }
+}
+.site-header__logo {
+  width: 130px;
+  height: 74px;
+  background-image: url("../../img/airplain-logo.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: #ff6fcd;
+}
+.site-header__logo:hover {
+  color: #b5418c;
+}
+.site-main {
+  flex-grow: 1;
+}
+.flights {
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 320px;
+  max-width: 1150px;
+  padding: 0 30px;
+}
+@media (min-width: 768px) {
+  .flights {
+    padding: 0 50px;
+  }
+}
+@media (min-width: 1150px) {
+  .flights {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
+.flights__list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+@media (min-width: 1150px) {
+  .flights__list {
+    display: grid;
+    column-gap: 15px;
+    row-gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media (min-width: 1150px) {
+  .flights__item {
+    width: 100%;
+  }
+}
+.flight-card {
+  border-radius: 7px;
+  padding: 20px 10px;
+}
+@media (min-width: 1150px) {
+  .flight-card {
+    background-color: #19191c;
+  }
+}
+.flight-card__flight {
+  margin: 0;
+}
+.site-footer {
+  background-color: #19191c;
+  flex-grow: 0;
+}
+/*# sourceMappingURL=style.css.map */
