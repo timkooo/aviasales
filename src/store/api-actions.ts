@@ -3,191 +3,122 @@ import { APIRoutes, NameSpaces } from '../const';
 import { api } from '../services/api';
 import { FlightWithId } from '../types/flight';
 import { RootState } from '../types/store';
+import { resultsToShowByMode } from './application/application.slice';
+import { BooksData } from '../types/booksData';
+import { Book } from '../types/book';
+import { AxiosError } from 'axios';
+
+// type KnownError = {
+//   errorMessage : string;
+// }
 
 export const loadFlights = createAsyncThunk(
   `${NameSpaces.Flights}/loadFlights`,
   async (currentPage : number, { getState }) => {
     const state = getState() as RootState;
-    const date = new Date();
+    const fetchParams = state[NameSpaces.Application].fetchParams;
+    const resultePerPage = resultsToShowByMode[state[NameSpaces.Application].screenMode];
+    const params = Object.fromEntries(fetchParams.flatMap(Object.entries));
     const { data, headers } = await api.get<FlightWithId[]>(APIRoutes.Flights, {
       params: {
-        ...state[NameSpaces.Application].sorting,
-        '_start' : (currentPage - 1) * state[NameSpaces.Application].resultsPerPage,
-        '_end' : (currentPage - 1) * state[NameSpaces.Application].resultsPerPage + state[NameSpaces.Application].resultsPerPage,
-        'dateFlight_lte' : date.toISOString(),
+        ...params,
+        '_start' : (currentPage - 1) * resultePerPage,
+        '_end' : (currentPage - 1) * resultePerPage + resultePerPage,
       },
     });
     return { data, headers };
   }
 );
 
-// export const loadCamerasWithParams = createAsyncThunk(
-//   `${NameSpace.Cameras}/loadCamerasWithParams`,
-//   async (_, { getState }) => {
-//     const state = getState() as RootState;
-//     const { data, headers } = await api.get<Camera[]>(APIRoute.Cameras, {
-//       params: {
-//         ...state[NameSpace.Application].filters,
-//         ...state[NameSpace.Application].sorting,
-//         ...state[NameSpace.Application].parameters,
-//         ...state[NameSpace.Application].price,
-//       },
-//     });
-//     return { data, headers };
-//   }
-// );
+export const loadMoreFlights = createAsyncThunk(
+  `${NameSpaces.Flights}/loadMoreFlights`,
+  async (currentPage : number, { getState }) => {
+    const state = getState() as RootState;
+    const fetchParams = state[NameSpaces.Application].fetchParams;
+    const resultePerPage = resultsToShowByMode[state[NameSpaces.Application].screenMode];
+    const params = Object.fromEntries(fetchParams.flatMap(Object.entries));
+    const { data, headers } = await api.get<FlightWithId[]>(APIRoutes.Flights, {
+      params: {
+        ...params,
+        '_start' : (currentPage - 1) * resultePerPage,
+        '_end' : (currentPage - 1) * resultePerPage + resultePerPage,
+      },
+    });
+    return { data, headers };
+  }
+);
 
-// export const loadCameraById = createAsyncThunk(
-//   `${NameSpace.Cameras}/loadCameraById`,
-//   async (cameraId: string | undefined, { rejectWithValue }) => {
-//     if (typeof cameraId === 'string') {
-//       const { data } = await api.get<Camera>(`${APIRoute.Cameras}/${cameraId}`);
-//       return data;
-//     }
-//     return rejectWithValue('');
-//   }
-// );
+export const loadFlightById = createAsyncThunk(
+  `${NameSpaces.Flights}/loadFlightById`,
+  async (flightId: string) => {
+    if (typeof flightId === 'string') {
+      const { data } = await api.get<FlightWithId[]>(`${APIRoutes.Flights}?id=${flightId}`);
+      return data[0];
+    }
+  }
+);
 
-// export const loadCamerasRange = createAsyncThunk(
-//   `${NameSpace.Cameras}/loadCamerasRange`,
-//   async () => {
-//     const { data, headers } = await api.get<Camera[]>(
-//       `${APIRoute.Cameras}/?_start=0&_end=10`
-//     );
-//     return { data, headers };
-//   }
-// );
+export const loadBooks = createAsyncThunk<BooksData | null, void, {rejectValue: string} >(
+  `${NameSpaces.Books}/loadBooks`,
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const booksSearchParams = state[NameSpaces.Application].booksSearchParams;
+      const { data } = await api.get<BooksData>(APIRoutes.Books, {
+        params: booksSearchParams
+      });
+      return data;
+    }
+    catch(err) {
+      if (err instanceof AxiosError) {
+        if (!err.response) {
+          throw err;
+        }
+        return rejectWithValue(err.message);
+      }
+    }
+    return null;
+  }
+);
 
-// export const loadSimilarCameras = createAsyncThunk(
-//   `${NameSpace.Cameras}/loadSimilarCameras`,
-//   async (cameraId: string | undefined, { rejectWithValue }) => {
-//     if (typeof cameraId === 'string') {
-//       const { data } = await api.get<Camera[]>(
-//         `${APIRoute.Cameras}/${cameraId}/similar`
-//       );
-//       return data;
-//     }
-//     return rejectWithValue('');
-//   }
-// );
+export const loadMoreBooks = createAsyncThunk<BooksData | null, void, {rejectValue: string}>(
+  `${NameSpaces.Books}/loadMoreBooks`,
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const booksSearchParams = state[NameSpaces.Application].booksSearchParams;
+      const { data } = await api.get<BooksData>(APIRoutes.Books, {
+        params: booksSearchParams
+      });
+      return data;
+    }
+    catch(err) {
+      if (err instanceof AxiosError) {
+        if (!err.response) {
+          throw err;
+        }
+        return rejectWithValue(err.message);
+      }
+    }
+    return null;
+  }
+);
 
-// export const loadReviews = createAsyncThunk(
-//   `${NameSpace.Reviews}/loadReviews`,
-//   async (cameraId: string | undefined, { rejectWithValue }) => {
-//     if (typeof cameraId === 'string') {
-//       const { data } = await api.get<Review[]>(
-//         `${APIRoute.Cameras}/${cameraId}/reviews`
-//       );
-//       return data;
-//     }
-//     return rejectWithValue('');
-//   }
-// );
-
-// export const postReview = createAsyncThunk(
-//   `${NameSpace.Reviews}/postReview`,
-//   async (review: ReviewPost) => {
-//     await api.post(APIRoute.Reviews, review);
-//   }
-// );
-
-// export const loadPromo = createAsyncThunk(
-//   `${NameSpace.Application}/loadPromo`,
-//   async () => {
-//     const { data } = await api.get<Promo>(APIRoute.Promo);
-//     return data;
-//   }
-// );
-
-// export const loadSearchResults = createAsyncThunk(
-//   `${NameSpace.Cameras}/loadSearchResults`,
-//   async (param: string) => {
-//     const searchParams = param.toLowerCase().split(' ');
-//     if (param === '') {
-//       return [];
-//     }
-//     let searchResults: Camera[] = [];
-//     await Promise.all(
-//       searchParams.map(async (word) => {
-//         const resultsByName = await api.get<Camera[]>(
-//           `${APIRoute.Cameras}?name_like=${word}`
-//         );
-//         const resultsByCategory = await api.get<Camera[]>(
-//           `${APIRoute.Cameras}?category_like=${word}`
-//         );
-//         const resultsByType = await api.get<Camera[]>(
-//           `${APIRoute.Cameras}?type_like=${word}`
-//         );
-//         searchResults = [
-//           ...searchResults,
-//           ...resultsByName.data,
-//           ...resultsByCategory.data,
-//           ...resultsByType.data,
-//         ];
-//       })
-//     );
-//     const uniqueResults = [
-//       ...new Map(searchResults.map((item) => [item.id, item])).values(),
-//     ];
-//     const filteredResults = uniqueResults.filter((seachResult: Camera) =>
-//       searchParams.every((word) =>
-//         Object.values(seachResult).some((value) => {
-//           if (value.toString().toLowerCase().indexOf(word) < 0) {
-//             return false;
-//           }
-//           return true;
-//         })
-//       )
-//     );
-//     return filteredResults;
-//   }
-// );
-
-// export const loadMinMaxPrice = createAsyncThunk(
-//   `${NameSpace.Application}/loadMinMaxPrice`,
-//   async () => {
-//     const min = await api.get<Camera[]>(
-//       `${APIRoute.Cameras}?_sort=price&_order=asc&_start=0&_end=1`
-//     );
-//     const minPrice = min.data[0].price;
-//     const max = await api.get<Camera[]>(
-//       `${APIRoute.Cameras}?_sort=price&_order=desc&_start=0&_end=1`
-//     );
-//     const maxPrice = max.data[0].price;
-//     return { minPrice, maxPrice };
-//   }
-// );
-
-// export const loadDiscount = createAsyncThunk(
-//   `${NameSpace.Basket}/loadDiscount`,
-//   async (coupon: { coupon: string }, { rejectWithValue }) => {
-//     try {
-//       const { data } = await api.post<number>(APIRoute.Coupons, coupon);
-//       return data;
-//     } catch (err) {
-//       if (err instanceof AxiosError) {
-//         if (!err.response) {
-//           throw err;
-//         }
-//         return rejectWithValue(err.response.status);
-//       }
-//     }
-//     return DEFAULT_DISCOUNT;
-//   }
-// );
-
-// export const postOrder = createAsyncThunk(
-//   `${NameSpace.Basket}/postReview`,
-//   async (order: { camerasIds: number[]; coupon: string | null }) => {
-//     try {
-//       await api.post(APIRoute.Orders, order);
-//     } catch (err) {
-//       if (err instanceof AxiosError) {
-//         if (!err.response) {
-//           throw err;
-//         }
-//         globalNavigate(AppRoutes.ErrorPage, { state : { error: err.message }});
-//       }
-//     }
-//   }
-// );
+export const loadBookById = createAsyncThunk<Book | null, string, {rejectValue: string}>(
+  `${NameSpaces.Books}/loadBookById`,
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get<Book>(`${APIRoutes.Books}/${id}`);
+      return data;
+    }
+    catch(err) {
+      if (err instanceof AxiosError) {
+        if (!err.response) {
+          throw err;
+        }
+        return rejectWithValue(err.message);
+      }
+    }
+    return null;
+  }
+);

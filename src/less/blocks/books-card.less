@@ -1,0 +1,48 @@
+.books-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 7px;
+  padding: 20px 20px;
+  background-color: @color-bg-dark;
+}
+
+.books-card__image-wrapper {
+  width: 100%;
+  height: 300px;
+  margin-bottom: 15px;
+}
+
+.books-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.books-card__title {
+  line-height: 24px;
+  margin: 0;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.books-card__authors {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  column-gap: 3px;
+  margin-bottom: 10px;
+}
+
+.books-card__category {
+  margin: 0;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.books-card__link {
+  color: @color-accent;
+  text-decoration: none;
+  margin-top: auto;
+}

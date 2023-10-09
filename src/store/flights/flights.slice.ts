@@ -1,29 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpaces } from '../../const';
 import { FlightWithId } from '../../types/flight';
-import { loadFlights } from '../api-actions';
+import { loadFlightById, loadFlights, loadMoreFlights } from '../api-actions';
 
 export type InitialState = {
   flights: FlightWithId[];
   areFlightsLoading: boolean;
   flightsAmount: number;
+  flightById: FlightWithId | null;
+  isFlightByIdLoading: boolean;
 };
 
 const initialState: InitialState = {
   flights: [],
   areFlightsLoading: false,
   flightsAmount: 0,
+  flightById: null,
+  isFlightByIdLoading: false,
 };
 
 export const flightsSlice = createSlice({
   name: NameSpaces.Flights,
   initialState,
-  reducers: {},
+  reducers: {
+    removeAllFlights(state) {
+      state.flights = [];
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(loadFlights.fulfilled, (state, action) => {
         state.flights = action.payload.data;
-        state.flightsAmount = Number(action.payload.headers['X-Total-Count']);
+        state.flightsAmount = Number(action.payload.headers['x-total-count']);
         state.areFlightsLoading = false;
       })
       .addCase(loadFlights.pending, (state) => {
@@ -33,31 +41,34 @@ export const flightsSlice = createSlice({
         state.flights = [];
         state.flightsAmount = 0;
         state.areFlightsLoading = false;
+      })
+      .addCase(loadMoreFlights.fulfilled, (state, action) => {
+        state.flights = [...state.flights, ...action.payload.data];
+        state.flightsAmount = Number(action.payload.headers['x-total-count']);
+        state.areFlightsLoading = false;
+      })
+      .addCase(loadMoreFlights.pending, (state) => {
+        state.areFlightsLoading = true;
+      })
+      .addCase(loadMoreFlights.rejected, (state) => {
+        state.flights = [];
+        state.flightsAmount = 0;
+        state.areFlightsLoading = false;
+      })
+      .addCase(loadFlightById.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.flightById = action.payload;
+        }
+        state.isFlightByIdLoading = false;
+      })
+      .addCase(loadFlightById.pending, (state) => {
+        state.isFlightByIdLoading = true;
+      })
+      .addCase(loadFlightById.rejected, (state) => {
+        state.flightById = null;
+        state.isFlightByIdLoading = false;
       });
-    // .addCase(loadCameraById.fulfilled, (state, action) => {
-    //   state.cameraById = action.payload;
-    //   state.isCameraByIdLoading = false;
-    // })
-    // .addCase(loadCameraById.pending, (state) => {
-    //   state.isCameraByIdLoading = true;
-    // })
-    // .addCase(loadCameraById.rejected, (state) => {
-    //   state.cameraById = null;
-    //   state.isCameraByIdLoading = false;
-    // })
-    // .addCase(loadSimilarCameras.fulfilled, (state, action) => {
-    //   state.similarCameras = action.payload;
-    //   state.areSimilarCamerasLoading = false;
-    // })
-    // .addCase(loadSimilarCameras.pending, (state) => {
-    //   state.areSimilarCamerasLoading = true;
-    // })
-    // .addCase(loadSimilarCameras.rejected, (state) => {
-    //   state.similarCameras = [];
-    //   state.areSimilarCamerasLoading = false;
-    // })
-    // .addCase(loadSearchResults.fulfilled, (state, action) => {
-    //   state.searchResults = action.payload;
-    // });
   },
 });
+
+export const { removeAllFlights } = flightsSlice.actions;
