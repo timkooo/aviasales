@@ -3,9 +3,9 @@ import { GlobalHistory } from './components/global-history/global-history';
 import { Root } from './components/root/root';
 import { AppRoutes } from './const';
 import { Flights } from './pages/flights/flights';
-// import { ErrorPage } from './pages/error-page/error-page';
-// import { PageNotFound } from './pages/page-not-found/page-not-found';
-// import { Flight } from '../pages/flight/flight';
+import { Flight } from './pages/flight/flight';
+import { Books } from './pages/books/books';
+import { BookPage } from './pages/book-page/book-page';
 
 export const routesConfig = [
   {
@@ -17,7 +17,7 @@ export const routesConfig = [
       },
       {
         path: AppRoutes.Main,
-        element: <Navigate to={AppRoutes.Flights} />,
+        element: <Navigate to={AppRoutes.Books} />,
       },
       {
         index: true,
@@ -25,21 +25,19 @@ export const routesConfig = [
         element: <Flights />,
       },
       {
-        path: `${AppRoutes.Flights}/page/:pageNumber`,
-        element: <Flights />,
+        path: `${AppRoutes.Flight}/:id`,
+        element: <Flight />,
       },
-      // {
-      //   path: `${AppRoutes.Flights}/:id`,
-      //   element: <Flight />,
-      // },
-      // {
-      //   path: '*',
-      //   element: <PageNotFound />,
-      // },
-      // {
-      //   path: AppRoutes.ErrorPage,
-      //   element: <ErrorPage />,
-      // },
+      {
+        index: true,
+        path: AppRoutes.Books,
+        element: <Books />,
+      },
+      {
+        index: true,
+        path: `${AppRoutes.Book}/:id`,
+        element: <BookPage />,
+      },
     ],
   },
 ];
