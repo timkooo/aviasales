@@ -433,6 +433,118 @@
 .flight-card__flight {
   margin: 0;
 }
+.login {
+  display: flex;
+}
+.login__item {
+  display: flex;
+  align-items: center;
+}
+.login__button {
+  width: 120px;
+  height: 30px;
+  color: #efeffa;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 16px;
+  background-color: #c34195;
+}
+.login-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(57, 57, 57, 0.68);
+}
+.login-modal--visible {
+  display: flex;
+}
+.login-modal__form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  margin: 200px auto auto auto;
+  padding: 30px 40px;
+  width: 400px;
+  height: 250px;
+  border-radius: 50px;
+  background-color: #61616c;
+}
+.login-modal__label {
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 700;
+}
+.login-modal__input {
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 24px;
+  color: #efeffa;
+  background-color: #19191c;
+}
+.login-modal__error-message {
+  display: block;
+  margin: 0;
+  padding: 0;
+  min-height: 25px;
+  color: #19191c;
+}
+.login-modal__login-button {
+  width: 100px;
+  height: 60px;
+  margin: 0 auto;
+  border: none;
+  border-radius: 10px;
+  color: #efeffa;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-color: #c34195;
+}
+.login-modal__close-button {
+  position: absolute;
+  top: 0;
+  right: -60px;
+  border-radius: 50%;
+  padding: 0.5em;
+  width: 50px;
+  height: 50px;
+  border: none;
+  color: blue;
+}
+.login-modal__close-button::before {
+  content: " ";
+  position: absolute;
+  display: block;
+  background-color: #19191c;
+  width: 2px;
+  height: 30px;
+  left: 24px;
+  top: 9px;
+  bottom: 5px;
+  transform: rotate(45deg);
+}
+.login-modal__close-button::after {
+  content: " ";
+  position: absolute;
+  display: block;
+  background-color: #19191c;
+  height: 2px;
+  width: 30px;
+  top: 23px;
+  left: 11px;
+  right: 5px;
+  transform: rotate(45deg);
+}
+.login-modal__close-button:hover {
+  background-color: #c34195;
+}
 .site-footer {
   background-color: #19191c;
   flex-grow: 0;
