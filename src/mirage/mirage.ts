@@ -2,6 +2,7 @@ import { Model, Response, Registry, Server } from 'miragejs';
 import { ModelDefinition } from 'miragejs/-types';
 import Schema from 'miragejs/orm/schema';
 import { faker } from '@faker-js/faker';
+import { APIRoutes } from '../const';
 
 type LoginData = {
   login: string;
@@ -54,6 +55,14 @@ export function initMirage() {
     },
 
     routes() {
+      this.passthrough(APIRoutes.Books, APIRoutes.Flights);
+      const NativeXMLHttpRequest = window.XMLHttpRequest;
+      window.XMLHttpRequest = function XMLHttpRequest() {
+        // eslint-disable-next-line prefer-rest-params
+        const request = new NativeXMLHttpRequest(arguments);
+        delete request.onloadend;
+        return request;
+      };
       this.post('/login', (schema: AppSchema, request) => {
         const loginData = JSON.parse(request.requestBody) as LoginData;
         const user = schema.findBy('user', {login: loginData.login, password: loginData.password});
