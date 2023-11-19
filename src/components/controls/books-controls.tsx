@@ -7,6 +7,7 @@ import { updateBooksFilter } from '../../store/books/books.slice';
 import { selectBooksSearchParams } from '../../store/application/application.selectors';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Login } from '../login/login';
 
 const defaultSearchParams = {
   q: '',
@@ -64,6 +65,7 @@ export const BooksControls = () => {
 
   return (
     <div className="books-controls">
+      <Login/>
       <h1 className="books-controls__title">Search for books</h1>
       <div className="books-controls__search">
         <input className="books-controls__search-input" type="text" onBlur={handleSearchBooksOnBlur} onKeyUp={handleSearchBooksOnEnter} defaultValue={searchParams.q} onChange={(e)=>setSearchQuery(e.target.value)}/>

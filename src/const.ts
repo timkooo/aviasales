@@ -12,7 +12,8 @@ export enum AppRoutes {
 export enum NameSpaces {
   Application = 'APPLICATION',
   Flights = 'FLIGHTS',
-  Books = 'BOOKS'
+  Books = 'BOOKS',
+  User = 'USER'
 }
 
 export enum APIRoutes {
